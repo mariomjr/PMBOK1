@@ -1,0 +1,113 @@
+package org.sysHotel.entity;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.UniqueConstraint;
+
+import org.sysHotel.enums.EnumAtivoInativo;
+
+@Entity
+public class Quarto implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2140409545924744264L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_quarto")
+	@SequenceGenerator(name = "seq_quarto", sequenceName = "SEQ_QUARTO", initialValue = 1)
+	private Long id;
+	
+	@Column(unique = true, nullable = false)
+	private String numeroQuarto;
+	
+	private Integer qtdePessoas;
+	
+	private String numeroCamas;
+	
+	private Integer andarQuarto;
+	
+	private String caracteristicas;
+	
+	private Double valor;
+
+	private EnumAtivoInativo ativoInativo;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public Integer getQtdePessoas() {
+		return qtdePessoas;
+	}
+
+	public void setQtdePessoas(Integer qtdePessoas) {
+		this.qtdePessoas = qtdePessoas;
+	}
+
+	public String getNumeroCamas() {
+		return numeroCamas;
+	}
+
+	public void setNumeroCamas(String numeroCamas) {
+		this.numeroCamas = numeroCamas;
+	}
+
+	public Integer getAndarQuarto() {
+		return andarQuarto;
+	}
+
+	public void setAndarQuarto(Integer andarQuarto) {
+		this.andarQuarto = andarQuarto;
+	}
+
+	public String getNumeroQuarto() {
+		return numeroQuarto;
+	}
+
+	public void setNumeroQuarto(String numeroQuarto) {
+		this.numeroQuarto = numeroQuarto;
+	}
+
+	public String getCaracteristicas() {
+		return caracteristicas;
+	}
+
+	public void setCaracteristicas(String caracteristicas) {
+		this.caracteristicas = caracteristicas;
+	}
+
+	public Double getValor() {
+		if(valor == null){
+			setValor(0.0);
+		}
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+
+	public EnumAtivoInativo getAtivoInativo() {
+		return ativoInativo;
+	}
+
+	public void setAtivoInativo(EnumAtivoInativo ativoInativo) {
+		this.ativoInativo = ativoInativo;
+	}
+	
+}

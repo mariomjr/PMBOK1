@@ -1,0 +1,16 @@
+package org.sysHotel.dao;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.sysHotel.entity.LoginUser;
+
+public class UsuarioDao {
+	@PersistenceContext
+	EntityManager entityManager;
+	
+	public LoginUser  buscaUserByLogin(String login){
+		return new LoginUser();
+	}
+	
+}

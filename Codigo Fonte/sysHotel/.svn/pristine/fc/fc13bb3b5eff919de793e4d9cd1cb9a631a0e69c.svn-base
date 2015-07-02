@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="content">
+				
+			<p:messages id="messagesReserva" showDetail="true" autoUpdate="true" closable="true" />
+				
+			<p:confirmDialog message="Deseja realmente excluir este Reserva ?"
+				header="Confirmação" severity="alert"
+				widgetVar="confirmExcluir" closable="false">
+				<p:commandButton value="Sim" actionListener="#{reservaBean.delete}" update=":frmReserva" oncomplete="confirmExcluir.hide()" style="margin-left:30%"/>
+				<p:commandButton value="Não" onclick="confirmExcluir.hide();" type="button" />
+			</p:confirmDialog>	
+			
+			<p:dialog header="Reserva" visible="true"  draggable="false" resizable="false"
+						closable="false">
+				<h:form id="frmReserva" prependId="false">
+								
+					<p:commandButton value="Novo" update=":frmCadReserva" actionListener="#{reservaBean.prepararNovoRegistro}" id="btnNovo"
+						oncomplete="dialogCadReserva.show()" icon="ui-icon-plus" />
+						
+					<p:commandButton value="Editar" update=":frmCadReserva" actionListener="#{reservaBean.prepararAlterarRegistro}" id="btnEditar"
+						oncomplete="dialogCadReserva.show()" icon="ui-icon-pencil"
+						disabled="#{reservaBean.reservaSelect.id==null?true:false}" />
+
+						
+					<p:commandButton value="Apagar" disabled="#{reservaBean.reservaSelect.id==null?true:false}" 
+						id="btnApagar" onclick="confirmExcluir.show()"
+						icon="ui-icon-trash" />		
+							
+							
+					<p:dataTable var="reserva" value="#{reservaBean.listReservas}" paginator="true" rowKey="#{reserva.id}"
+						rows="8" rowsPerPageTemplate="6,12,16" selectionMode="single" selection="#{reservaBean.reservaSelect}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				        >
+				        <p:ajax global="false" event="rowSelect" update=":frmReserva"/>
+					 	
+					 	<p:column headerText="Solicitante">
+					        <h:outputText value="#{reserva.hospede.nome}" />
+					    </p:column>
+
+					    <p:column headerText="Quarto">
+					        <h:outputText value="#{reserva.quarto.numeroQuarto}" />
+					    </p:column>
+					    
+					    <p:column headerText="Dias">
+					        <h:outputText value="#{reserva.diasReserva}" />
+					    </p:column>
+					    
+					    <p:column headerText="Data da Reserva">
+					        <h:outputText value="#{reserva.dataReserva}" />
+					    </p:column>
+					
+					</p:dataTable>
+				</h:form>
+		    </p:dialog>
+				
+				
+
+			<p:dialog header="Cadastrar Reserva"
+			 	resizable="false" modal="true" widgetVar="dialogCadReserva"
+				position="center" id="mdlCadastroReserva">
+				
+				<h:form id="frmCadReserva">
+					<p:outputPanel>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Data da reserva:" />
+							<p:calendar id="calReserva" locale="pt" value="#{reservaBean.reserva.dataReserva}" pattern="dd/MM/yyyy" />
+							<h:outputLabel value="Quantidade de dias:" />
+							<p:inputMask mask="9?999" maxlength="3" placeHolder=" "></p:inputMask>
+						</h:panelGrid>
+					</p:outputPanel>
+					<p:commandButton actionListener="#{reservaBean.salvarAlterar}" value="Salvar"
+						oncomplete="dialogCadReserva.hide()" update=":frmReserva"
+						></p:commandButton>
+					<p:commandButton value="Cancelar" onclick="dialogCadReserva.hide()" />
+				
+					
+				</h:form>
+				
+			</p:dialog>
+
+
+		</ui:define>
+	</ui:composition>
+</html>

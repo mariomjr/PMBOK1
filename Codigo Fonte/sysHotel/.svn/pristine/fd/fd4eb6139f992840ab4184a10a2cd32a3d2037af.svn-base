@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="content">
+				
+				
+			<p:confirmDialog message="Deseja realmente excluir este Usuário ?"
+				header="Confirmação" severity="alert"
+				widgetVar="confirmExcluir" closable="false">
+				<p:commandButton value="Sim" actionListener="#{usuarioBean.delete}" update=":frmUsuario" oncomplete="confirmExcluir.hide()" style="margin-left:30%"/>
+				<p:commandButton value="Não" onclick="confirmExcluir.hide();" type="button" />
+			</p:confirmDialog>	
+			
+			<p:dialog header="Usuário" visible="true"  draggable="false" resizable="false"
+						closable="false">
+				<h:form id="frmUsuario" prependId="false">
+								
+					<p:commandButton value="Novo" update=":frmCadUsuario" actionListener="#{usuarioBean.prepararNovoRegistro}" id="btnNovo"
+						oncomplete="dialogCadUsuario.show()" icon="ui-icon-plus" />
+						
+					<p:commandButton value="Editar" update=":frmCadUsuario" actionListener="#{usuarioBean.prepararAlterarRegistro}" id="btnEditar"
+						oncomplete="dialogCadUsuario.show()" icon="ui-icon-pencil"
+						disabled="#{usuarioBean.usuarioSelect.id==null?true:false}" />
+
+						
+					<p:commandButton value="Apagar" disabled="#{usuarioBean.usuarioSelect.id==null?true:false}" 
+						id="btnApagar" onclick="confirmExcluir.show()"
+						icon="ui-icon-trash" />		
+							
+							
+					<p:dataTable var="usuario" value="#{usuarioBean.listUsuario}" paginator="true" rowKey="#{usuario.id}"
+						rows="12" rowsPerPageTemplate="6,12,16" selectionMode="single" selection="#{usuarioBean.usuarioSelect}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				        >
+				        <p:ajax global="false" event="rowSelect" update=":frmUsuario"/>
+					 	
+					 	<p:column headerText="Login">
+					        <h:outputText value="#{usuario.login}" />
+					    </p:column>
+
+					    <p:column headerText="Perfil de acesso">
+					        <h:outputText value="#{usuario.perfilAcesso.nomePerfil}" />
+					    </p:column>
+					
+					</p:dataTable>
+				</h:form>
+		    </p:dialog>
+				
+				
+
+			<p:dialog header="Cadastrar Usuário"
+			 	resizable="false" modal="true" widgetVar="dialogCadUsuario"
+				position="center" id="mdlCadastroUsuario">
+				
+				<h:form id="frmCadUsuario">
+					<p:outputPanel>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Login:" />
+							<h:inputText value="#{usuarioBean.usuario.login}" />
+							<h:outputLabel value="Senha :" />
+							<h:inputSecret value="#{usuarioBean.usuario.password}" /> 
+							<p:outputLabel for="perfilAcesso" value="Perfil de Acesso: " />
+					        <p:selectOneMenu id="perfilAcesso" value="#{usuarioBean.usuario.perfilAcesso}" converter="perfilAcessoConverter">
+					            <f:selectItem itemLabel="Selecione um perfil" itemValue="" />
+					            <f:selectItems value="#{usuarioBean.perfisAcesso}" var="perfilAcesso"/>
+					             <p:ajax event="change" listener="#{usuarioBean.perfilAcessoUsuario}"/>
+					        </p:selectOneMenu>
+
+
+						</h:panelGrid>
+					</p:outputPanel>
+					<p:commandButton actionListener="#{usuarioBean.salvarAlterar}" value="Salvar"
+						oncomplete="dialogCadUsuario.hide()" update=":frmUsuario"
+						></p:commandButton>
+					<p:commandButton value="Cancelar" onclick="dialogCadUsuario.hide()" />
+				
+					
+				</h:form>
+				
+			</p:dialog>
+
+
+		</ui:define>
+	</ui:composition>
+</html>

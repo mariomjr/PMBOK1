@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="content">
+				
+				
+			<p:confirmDialog message="Deseja realmente excluir este Quarto ?"
+				header="Confirmação" severity="alert"
+				widgetVar="confirmExcluir" closable="false">
+				<p:commandButton value="Sim" actionListener="#{quartoBean.delete}" update=":frmQuarto" oncomplete="confirmExcluir.hide()" style="margin-left:30%"/>
+				<p:commandButton value="Não" onclick="confirmExcluir.hide();" type="button" />
+			</p:confirmDialog>	
+			
+			<p:dialog header="Quartos" visible="true"  draggable="false" resizable="false"
+						closable="false">
+				<h:form id="frmQuarto" prependId="false">
+								
+					<p:commandButton value="Novo" update=":frmCadQuarto" actionListener="#{quartoBean.prepararNovoRegistro}" id="btnNovo"
+						oncomplete="dialogCadQuarto.show()" icon="ui-icon-plus" />
+						
+					<p:commandButton value="Editar" update=":frmCadQuarto" actionListener="#{quartoBean.prepararAlterarRegistro}" id="btnEditar"
+						oncomplete="dialogCadQuarto.show()" icon="ui-icon-pencil"
+						disabled="#{quartoBean.quartoSelect.id==null?true:false}" />
+
+						
+					<p:commandButton value="Apagar" disabled="#{quartoBean.quartoSelect.id==null?true:false}" 
+						id="btnApagar" onclick="confirmExcluir.show()"
+						icon="ui-icon-trash" />		
+							
+							
+					<p:dataTable var="quarto" value="#{quartoBean.listQuartos}" paginator="true" rowKey="#{quarto.id}"
+						rows="12" rowsPerPageTemplate="6,12,16" selectionMode="single" selection="#{quartoBean.quartoSelect}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				        >
+				        <p:ajax global="false" event="rowSelect" update=":frmQuarto"/>
+					 	
+					 	<p:column headerText="Andar">
+					        <h:outputText value="#{quarto.andarQuarto}" />
+					    </p:column>
+					    <p:column headerText="Nº quarto">
+					        <h:outputText value="#{quarto.numeroQuarto}" />
+					    </p:column>
+					 
+					    <p:column headerText="Nº camas">
+					        <h:outputText value="#{quarto.numeroCamas}" />
+					    </p:column>
+					 
+					    <p:column headerText="Qtde. Pessoas">
+					        <h:outputText value="#{quarto.qtdePessoas}" />
+					    </p:column>
+					    
+					    <p:column headerText="Valor">
+					        <h:outputText value="#{quarto.valor}" converter="doubleConverter"/>
+					    </p:column>
+					    <p:column headerText="Características">
+					        <h:outputText value="#{quarto.caracteristicas}" />
+					    </p:column>
+					</p:dataTable>
+				</h:form>
+		    </p:dialog>
+				
+				
+
+			<p:dialog header="Cadastrar Quarto"
+			 	resizable="false" modal="true" widgetVar="dialogCadQuarto"
+				position="center" id="mdlCadastroQuarto">
+				
+				<h:form id="frmCadQuarto" prependId="false">
+					<p:outputPanel>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Número quarto :" />
+							<h:inputText value="#{quartoBean.quarto.numeroQuarto}" />
+							<h:outputLabel value="Número camas :" />
+							<h:inputText value="#{quartoBean.quarto.numeroCamas}" />
+							<h:outputLabel value="Quantidade pessoas :" />
+							<h:inputText value="#{quartoBean.quarto.qtdePessoas}" />
+							<h:outputLabel value="Andar quarto :" />
+							<h:inputText value="#{quartoBean.quarto.andarQuarto}" />
+							<h:outputLabel value="Valor :" />
+							<h:inputText value="#{quartoBean.quarto.valor}" />
+							<h:outputLabel value="Características :" />
+							<h:inputTextarea value="#{quartoBean.quarto.caracteristicas}" />
+						</h:panelGrid>
+					</p:outputPanel>
+					<p:commandButton actionListener="#{quartoBean.salvarAlterar}" value="Salvar"
+						oncomplete="dialogCadQuarto.hide()" update=":frmQuarto"
+						></p:commandButton>
+					<p:commandButton value="Cancelar" onclick="dialogCadQuarto.hide()" />
+				
+					
+				</h:form>
+				
+			</p:dialog>
+
+
+		</ui:define>
+	</ui:composition>
+</html>

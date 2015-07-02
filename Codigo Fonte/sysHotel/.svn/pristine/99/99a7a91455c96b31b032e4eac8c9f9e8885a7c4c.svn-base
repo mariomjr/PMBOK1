@@ -1,0 +1,112 @@
+package org.sysHotel.controller;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
+
+import org.primefaces.event.SelectEvent;
+import org.sysHotel.entity.ServicoQuarto;
+import org.sysHotel.interfaces.ICrudPrimeFaces;
+import org.sysHotel.interfaces.IServicoQuartoDao;
+
+@SessionScoped
+@ManagedBean(name = "servicoQuartoBean")
+public class ServicoQuartoBean implements Serializable, ICrudPrimeFaces<ServicoQuarto>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5632653724192712365L;
+	
+	@Inject
+	private ServicoQuarto servicoQuarto;
+	
+	private List<ServicoQuarto> listServicoQuarto;
+	
+	private ServicoQuarto servicoQuartoSelect;
+	
+	@Inject
+	IServicoQuartoDao servicoQuartoDao;
+	
+	@PostConstruct
+	public void initServicoQuarto(){
+		List<ServicoQuarto> listServicoQuarto = servicoQuartoDao.findAllAtivos();
+		setListServicoQuarto(listServicoQuarto);
+	}
+	
+	@Override
+	public void prepararAlterarRegistro(ActionEvent actionEvent) {
+		setServicoQuarto(getServicoQuartoSelect());
+	}
+
+	@Override
+	public void prepararNovoRegistro(ActionEvent actionEvent) {
+		setServicoQuarto(new ServicoQuarto());
+	}
+
+	@Override
+	public void salvarAlterar(ActionEvent actionEvent) {
+		if(validarDados()){
+			if(getServicoQuarto().getId()== null){
+				servicoQuartoDao.save(getServicoQuarto());
+			}else{
+				servicoQuartoDao.update(getServicoQuarto());
+			}
+			
+		}
+		
+	}
+
+	private boolean validarDados() {
+		return true;
+	}
+
+	@Override
+	public void onRowSelect(SelectEvent event) {		
+	}
+
+	@Override
+	public void delete(ActionEvent actionEvent) {
+		servicoQuartoDao.delete(getServicoQuarto());
+	}
+
+	public ServicoQuarto getServicoQuarto() {
+		if(servicoQuarto == null){
+			servicoQuarto = new ServicoQuarto();
+		}
+		return servicoQuarto;
+	}
+
+	public void setServicoQuarto(ServicoQuarto servicoQuarto) {
+		this.servicoQuarto = servicoQuarto;
+	}
+
+	public List<ServicoQuarto> getListServicoQuarto() {
+		if(listServicoQuarto == null){
+			listServicoQuarto = new ArrayList<ServicoQuarto>();
+		}
+		return listServicoQuarto;
+	}
+
+	public void setListServicoQuarto(List<ServicoQuarto> listServicoQuarto) {
+		this.listServicoQuarto = listServicoQuarto;
+	}
+
+	public ServicoQuarto getServicoQuartoSelect() {
+		if(servicoQuartoSelect == null){
+			servicoQuartoSelect = new ServicoQuarto();
+		}
+		return servicoQuartoSelect;
+	}
+
+	public void setServicoQuartoSelect(ServicoQuarto servicoQuartoSelect) {
+		this.servicoQuartoSelect = servicoQuartoSelect;
+	}
+
+}

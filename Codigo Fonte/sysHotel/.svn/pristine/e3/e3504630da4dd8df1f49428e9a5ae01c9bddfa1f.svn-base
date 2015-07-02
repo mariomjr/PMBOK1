@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="content">
+				
+			<p:messages id="messagesCheckIn" showDetail="true" autoUpdate="true" closable="true" />
+				
+			<p:confirmDialog message="Deseja realmente excluir este Check In ?"
+				header="Confirmação" severity="alert"
+				widgetVar="confirmExcluir" closable="false">
+				<p:commandButton value="Sim" actionListener="#{checkInCheckOutBean.delete}" 
+					update=":frmCheckInOut" oncomplete="confirmExcluir.hide()" style="margin-left:30%"/>
+				<p:commandButton value="Não" onclick="confirmExcluir.hide();" type="button" />
+			</p:confirmDialog>	
+			
+			<p:dialog header="Check-In e Check-Out" visible="true"  draggable="false" resizable="false"
+						closable="false">
+				<h:form id="frmCheckInOut" prependId="false">
+								
+					<p:commandButton value="Novo" update=":frmCadCheckIn" 
+						actionListener="#{checkInCheckOutBean.prepararNovoRegistro}" id="btnNovo"
+						oncomplete="dialogCadCheckIn.show()" icon="ui-icon-plus" />
+						
+					<p:commandButton value="Editar" update=":frmCadCheckOut" 
+						actionListener="#{checkInCheckOutBean.prepararAlterarRegistro}" id="btnEditar"
+						oncomplete="mdlCadastroCheckOut.show()" icon="ui-icon-pencil"
+						disabled="#{checkInCheckOutBean.checkInCheckOutSelect.id==null?true:false}" />
+
+						
+					<p:commandButton value="Apagar" disabled="#{checkInCheckOutBean.checkInCheckOutSelect.id==null?true:false}" 
+						id="btnApagar" onclick="confirmExcluir.show()"
+						icon="ui-icon-trash" />		
+							
+							
+					<p:dataTable var="checkInOut" value="#{checkInCheckOutBean.listCheckInCheckOut}" 
+						paginator="true" rowKey="#{checkInOut.id}"
+						rows="8" rowsPerPageTemplate="6,12,16" selectionMode="single" selection="#{checkInCheckOutBean.checkInCheckOutSelect}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				        >
+				        <p:ajax global="false" event="rowSelect" update=":frmCheckInOut"/>
+					 	
+					 	 <p:column headerText="Quarto">
+					        <h:outputText value="#{checkInOut.reserva.quarto}" />
+					    </p:column>
+					 	
+					 	<p:column headerText="Data Check - In">
+					        <h:outputText value="#{checkInOut.dataCheckIn}" />
+					    </p:column>
+					
+					</p:dataTable>
+				</h:form>
+		    </p:dialog>
+				
+				
+
+			<p:dialog header="Check - In"
+			 	resizable="false" modal="true" widgetVar="dialogCadCheckIn"
+				position="center" id="mdlCadastroCheckIn">
+				
+				<h:form id="frmCadCheckIn">
+					<p:outputPanel>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Pedido :" />
+							<h:inputTextarea value="#{checkInCheckOutBean.checkInCheckOut.situacao}" />
+						</h:panelGrid>
+					</p:outputPanel>
+					<p:commandButton actionListener="#{servicoQuartoBean.salvarAlterar}" value="Salvar"
+						oncomplete="dialogCadCheckIn.hide()" update=":frmCheckInOut"
+						></p:commandButton>
+					<p:commandButton value="Cancelar" onclick="dialogCadCheckIn.hide()" />
+				
+					
+				</h:form>
+				
+			</p:dialog>
+			
+			<p:dialog header="Check - Out"
+			 	resizable="false" modal="true" widgetVar="dialogCadCheckOut"
+				position="center" id="mdlCadastroCheckOut">
+				
+				<h:form id="frmCadCheckOut">
+					<p:outputPanel>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Data Saída :" />
+							<h:inputTextarea value="#{checkInCheckOutBean.checkInCheckOut.dataCheckOut}" />
+						</h:panelGrid>
+					</p:outputPanel>
+					<p:commandButton actionListener="#{checkInCheckOutBean.salvarAlterar}" value="Salvar"
+						oncomplete="dialogCadCheckOut.hide()" update=":frmCheckInOut"
+						></p:commandButton>
+					<p:commandButton value="Cancelar" onclick="dialogCadCheckOut.hide()" />
+				
+					
+				</h:form>
+				
+			</p:dialog>
+
+
+		</ui:define>
+	</ui:composition>
+</html>

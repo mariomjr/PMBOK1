@@ -1,0 +1,13 @@
+package org.sysHotel.enums;
+
+public enum Role {
+	QUARTO, 
+	HOSPEDE, 
+	RESERVA, 
+	SERVICOQUARTO,
+	USUARIO, 
+	PERFILACESSO,
+	RELRESERVA, 
+	RELRECEITAS;
+
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="content">
+				
+			<p:messages id="messagesRelReserva" showDetail="true" autoUpdate="true" closable="true" />
+			
+			<p:dialog header="Relatório de Reservas" visible="true"  draggable="false" resizable="false"
+						closable="false">
+				<h:form>
+				    <p:dataTable id="tblRelReservas" var="reserva" value="#{relReservaBean.listReservas}"
+				                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+				                 paginator="true" rows="10" style="margin-bottom:20px">
+				 
+				        <p:column>
+				            <f:facet name="header">
+				                <h:outputText value="Hóspede" />
+				            </f:facet>
+				            <h:outputText value="#{reserva.hospede.nome}" />
+				        </p:column>
+				 
+				        <p:column>
+				            <f:facet name="header">
+				                <h:outputText value="Valor"/>
+				            </f:facet>
+				            <h:outputText value="#{reserva.dataReserva}" />
+				        </p:column>
+				        <p:column>
+				            <f:facet name="header">
+				                <h:outputText value="Dias"/>
+				            </f:facet>
+				            <h:outputText value="#{reserva.diasReserva}" />
+				        </p:column>
+				        <p:column>
+				            <f:facet name="header">
+				                <h:outputText value="Nº Quartos"/>
+				            </f:facet>
+				            <h:outputText value="#{reserva.listQuarto.size()}" />
+				        </p:column>
+				    </p:dataTable>
+				     <h3>Exportar</h3>
+				    <h:commandLink value="XLS">
+				        <p:dataExporter type="xls" target="tblRelReservas" fileName="reservas" pageOnly="true"/>
+				    </h:commandLink>
+				 	<p:spacer width="15px"></p:spacer>
+				    <h:commandLink value="PDF">
+				        <p:dataExporter type="pdf" target="tblRelReservas" fileName="reservas" pageOnly="true" />
+				    </h:commandLink>
+				 
+				</h:form>
+		    </p:dialog>
+
+
+		</ui:define>
+	</ui:composition>
+</html>

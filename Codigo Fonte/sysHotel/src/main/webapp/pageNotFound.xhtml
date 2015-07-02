@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" >
+<h:head>
+<title>sysHotel - Página não encontrada</title>
+
+<style type="text/css">               
+    body{
+    	background:url(#{request.contextPath}/img/hotelNaoEncontrado.jpg) no-repeat center center fixed;
+		 -webkit-background-size: cover;
+  		-moz-background-size: cover;
+  		-o-background-size: cover;
+  		background-size: cover;
+		
+   	}
+    </style>   
+</h:head>
+<h:body>
+<h:form>
+    <p:panel id="panel" header="Página não encontrada" style="width: 400px; margin-left:35%;margin-top:10%">
+ 
+        <p:messages id="msgs" />
+ 
+        <h:panelGrid columns="2" cellpadding="5" width="350px">
+
+		       	   <h:outputLabel value="Oops. Hotel não encontrado!"/>
+
+        </h:panelGrid>
+ 
+    </p:panel>
+</h:form>
+</h:body>
+</html>

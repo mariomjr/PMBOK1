@@ -1,0 +1,112 @@
+package org.sysHotel.controller;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
+
+import org.primefaces.event.SelectEvent;
+import org.sysHotel.entity.Reserva;
+import org.sysHotel.interfaces.ICrudPrimeFaces;
+import org.sysHotel.interfaces.IReservaDao;
+
+@ManagedBean(name = "reservaBean")
+@SessionScoped
+public class ReservaBean implements Serializable, ICrudPrimeFaces<Reserva>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1296974024641415224L;
+
+	@Inject
+	private Reserva reserva;
+	
+	private Reserva reservaSelect;
+	
+	private List<Reserva> listReservas;
+	
+	@Inject
+	IReservaDao reservaDao;
+	
+	@PostConstruct
+	public void init(){
+		List<Reserva> listReserva = reservaDao.findAllAtivos();
+		setListReservas(listReserva);
+	}
+	
+	@Override
+	public void prepararAlterarRegistro(ActionEvent actionEvent) {
+		setReserva(getReservaSelect());
+	}
+
+	@Override
+	public void prepararNovoRegistro(ActionEvent actionEvent) {
+		setReserva(new Reserva());
+	}
+
+	@Override
+	public void salvarAlterar(ActionEvent actionEvent) {
+		if(validarDados()){
+			if(getReserva().getId()== null){
+				
+			}else{
+				
+			}
+			init();
+		}
+		
+	}
+
+	private boolean validarDados() {
+		return true;
+	}
+
+	@Override
+	public void onRowSelect(SelectEvent event) {
+	}
+
+	@Override
+	public void delete(ActionEvent actionEvent) {
+		reservaDao.delete(getReservaSelect());
+	}
+
+	public Reserva getReserva() {
+		if(reserva == null){
+			reserva = new Reserva();
+		}
+		return reserva;
+	}
+
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
+	}
+
+	public Reserva getReservaSelect() {
+		if(reservaSelect == null){
+			reservaSelect = new Reserva();
+		}
+		return reservaSelect;
+	}
+
+	public void setReservaSelect(Reserva reservaSelect) {
+		this.reservaSelect = reservaSelect;
+	}
+
+	public List<Reserva> getListReservas() {
+		if(listReservas == null){
+			listReservas = new ArrayList<Reserva>();
+		}
+		return listReservas;
+	}
+
+	public void setListReservas(List<Reserva> listReservas) {
+		this.listReservas = listReservas;
+	}
+	
+}

@@ -1,0 +1,98 @@
+package org.sysHotel.entity;
+
+import java.io.Serializable;
+import java.util.Calendar;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.sysHotel.enums.EnumAtivoInativo;
+
+@Entity
+public class Reserva implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1631181483899873752L;
+
+	@Id
+	@GeneratedValue
+	private Long id;
+	
+	private Calendar dataReserva;
+	
+	private Calendar dataOperacao;
+	
+	private Integer diasReserva;
+	
+	private EnumAtivoInativo ativoInativo;
+	
+	@ManyToOne
+	@JoinColumn(referencedColumnName = "id")
+	private Hospede hospede;
+	
+	@ManyToOne
+	@JoinColumn(referencedColumnName = "id")
+	private Quarto quarto;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Calendar getDataReserva() {
+		return dataReserva;
+	}
+
+	public void setDataReserva(Calendar dataReserva) {
+		this.dataReserva = dataReserva;
+	}
+
+	public Calendar getDataOperacao() {
+		return dataOperacao;
+	}
+
+	public void setDataOperacao(Calendar dataOperacao) {
+		this.dataOperacao = dataOperacao;
+	}
+
+	public EnumAtivoInativo getAtivoInativo() {
+		return ativoInativo;
+	}
+
+	public void setAtivoInativo(EnumAtivoInativo ativoInativo) {
+		this.ativoInativo = ativoInativo;
+	}
+
+	public Hospede getHospede() {
+		return hospede;
+	}
+
+	public void setHospede(Hospede hospede) {
+		this.hospede = hospede;
+	}
+
+	public Quarto getQuarto() {
+		return quarto;
+	}
+
+	public void setQuarto(Quarto quarto) {
+		this.quarto = quarto;
+	}
+
+	public Integer getDiasReserva() {
+		return diasReserva;
+	}
+
+	public void setDiasReserva(Integer diasReserva) {
+		this.diasReserva = diasReserva;
+	}
+	
+}

@@ -1,0 +1,37 @@
+package org.sysHotel.converter;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+
+import org.sysHotel.dao.PerfilAcessoDaoImpl;
+import org.sysHotel.entity.PerfilAcesso;
+
+@FacesConverter(value="perfilAcessoConverter")
+public class PerfilAcessoConverter implements Converter {
+	
+	@Override
+	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {
+		 if(arg2 == null || arg2.isEmpty()){
+	            return null;
+	        }else{
+	            Long id = Long.parseLong(arg2);
+	            PerfilAcessoDaoImpl perfilAcessoDao = new PerfilAcessoDaoImpl();
+	            PerfilAcesso unidade = perfilAcessoDao.getById(id);
+	            return unidade;
+	        }
+	}
+
+	@Override
+	public String getAsString(FacesContext arg0, UIComponent arg1, Object arg2) {
+		String str = "";
+		if (arg2 instanceof PerfilAcesso) {
+			str = ((PerfilAcesso) arg2).getId().toString(); 
+		}
+		return str; 
+
+	}
+
+}

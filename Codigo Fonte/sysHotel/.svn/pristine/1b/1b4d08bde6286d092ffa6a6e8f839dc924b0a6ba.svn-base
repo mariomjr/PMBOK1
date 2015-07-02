@@ -1,0 +1,8 @@
+WARNING=DO NOT MODIFY THIS FILE IF YOU DON'T UNDERSTAND
+defaultDestination=D\:/Projetos/server/jboss-as-7.1.1.Final/standalone/deployments/sysHotel.war
+defaultVariables=
+eclipse.preferences.version=1
+includeTeamPrivateFiles=false
+map|0=/|,|,|src/|,
+map|1=src|,|,|,|,
+useCurrentDateForDestinationFiles=false

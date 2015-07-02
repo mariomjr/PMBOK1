@@ -1,0 +1,49 @@
+package org.sysHotel.dao;
+
+import java.util.List;
+
+import org.sysHotel.dao.generic.GenericHibernateDao;
+import org.sysHotel.entity.CheckInCheckOut;
+import org.sysHotel.enums.EnumAtivoInativo;
+import org.sysHotel.interfaces.ICheckInCheckOutDao;
+
+public class CheckInCheckOutDaoImpl extends GenericHibernateDao<CheckInCheckOut, Long> implements ICheckInCheckOutDao{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2305102377328860006L;
+	
+	@Override
+	public CheckInCheckOut getById(Long pk) {
+		return super.getById(pk);
+	}
+
+	@Override
+	public void save(CheckInCheckOut entity) {
+		entity.setAtivoInativo(EnumAtivoInativo.ATIVO);
+		super.save(entity);
+	}
+
+	@Override
+	public void update(CheckInCheckOut entity) {
+		super.update(entity);
+	}
+
+	@Override
+	public void delete(CheckInCheckOut entity) {
+		entity.setAtivoInativo(EnumAtivoInativo.INATIVO);
+		super.update(entity);
+	}
+
+	@Override
+	public List<CheckInCheckOut> findAll() {
+		return super.findAll();
+	}
+
+	@Override
+	public List<CheckInCheckOut> findAllAtivos() {
+		return super.findAllAtivos();
+	}
+
+}

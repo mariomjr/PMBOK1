@@ -1,0 +1,80 @@
+package org.sysHotel.entity;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.sysHotel.enums.EnumAtivoInativo;
+import org.sysHotel.enums.Role;
+
+@Entity
+@XmlRootElement
+public class PerfilAcesso implements Serializable{
+
+	private static final long serialVersionUID = -791240727894653996L;
+	
+	@Id
+    @GeneratedValue
+	private Long id;
+	
+	private String nomePerfil;
+	
+	private EnumAtivoInativo ativoInativo;
+	
+	@ElementCollection(targetClass=Role.class, fetch=FetchType.EAGER)
+	@Enumerated(EnumType.STRING)
+	@CollectionTable(name="prefil_roles", joinColumns={@JoinColumn(name="perfil_id")})
+	@Column(name="role")
+	private List<Role> roles;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public String getNomePerfil() {
+		return nomePerfil;
+	}
+
+	public void setNomePerfil(String nomePerfil) {
+		this.nomePerfil = nomePerfil;
+	}
+
+	public EnumAtivoInativo getAtivoInativo() {
+		return ativoInativo;
+	}
+
+	public void setAtivoInativo(EnumAtivoInativo ativoInativo) {
+		this.ativoInativo = ativoInativo;
+	}
+
+	public List<Role> getRoles() {
+		if(roles == null){
+			roles = new ArrayList<Role>();
+		}
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public boolean hasRole(Role role) {
+        return roles.contains(role);
+	}
+}

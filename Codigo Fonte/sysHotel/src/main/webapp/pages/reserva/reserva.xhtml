@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="content">
+				
+			<p:messages id="messagesReserva" showDetail="true" autoUpdate="true" closable="true" />
+				
+			<p:confirmDialog message="Deseja realmente excluir este Reserva ?"
+				header="Confirmação" severity="alert"
+				widgetVar="confirmExcluir" closable="false">
+				<p:commandButton value="Sim" actionListener="#{reservaBean.delete}" update=":frmReserva" oncomplete="confirmExcluir.hide()" style="margin-left:30%"/>
+				<p:commandButton value="Não" onclick="confirmExcluir.hide();" type="button" />
+			</p:confirmDialog>	
+			
+			<p:dialog header="Reserva" visible="true"  draggable="false" resizable="false"
+						closable="false">
+				<h:form id="frmReserva" prependId="false">
+								
+					<p:commandButton value="Novo" update=":frmCadReserva" actionListener="#{reservaBean.prepararNovoRegistro}" id="btnNovo"
+						oncomplete="dialogCadReserva.show()" icon="ui-icon-plus" />
+						
+					<p:commandButton value="Editar" update=":frmCadReserva" actionListener="#{reservaBean.prepararAlterarRegistro}" id="btnEditar"
+						oncomplete="dialogCadReserva.show()" icon="ui-icon-pencil"
+						disabled="#{reservaBean.reservaSelect.id==null?true:false}" />
+
+						
+					<p:commandButton value="Apagar" disabled="#{reservaBean.reservaSelect.id==null?true:false}" 
+						id="btnApagar" onclick="confirmExcluir.show()"
+						icon="ui-icon-trash" />		
+							
+							
+					<p:dataTable var="reserva" value="#{reservaBean.listReservas}" paginator="true" rowKey="#{reserva.id}"
+						rows="8" rowsPerPageTemplate="6,12,16" selectionMode="single" selection="#{reservaBean.reservaSelect}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				        >
+				        <p:ajax global="false" event="rowSelect" update=":frmReserva"/>
+					 	
+					 	<p:column headerText="Solicitante">
+					        <h:outputText value="#{reserva.hospede.nome}" />
+					    </p:column>
+					    
+					    <p:column headerText="Dias">
+					        <h:outputText value="#{reserva.diasReserva}" />
+					    </p:column>
+					    
+					    <p:column headerText="Data da Reserva">
+					        <h:outputText value="#{reserva.dataReserva}" />
+					    </p:column>
+					
+					</p:dataTable>
+				</h:form>
+		    </p:dialog>
+				
+				
+
+			<p:dialog header="Cadastrar Reserva"
+			 	resizable="false" modal="true" widgetVar="dialogCadReserva"
+				position="center" id="mdlCadastroReserva">
+				
+				<h:form id="frmCadReserva" prependId="false">
+					<p:outputPanel>
+						<h:panelGrid columns="2">
+							<p:outputLabel value="Data da reserva:" for="calReserva"/>
+							<p:calendar id="calReserva" locale="pt" value="#{reservaBean.reserva.dataReserva}" readonlyInput="true"
+								valueChangeListener="#{reservaBean.reserva.dataReserva}" pattern="dd/MM/yyyy" immediate="true">
+								<p:ajax event="dateSelect" listener="#{reservaBean.reserva.dataReserva}" process="@this" update="@this"/>
+							</p:calendar>
+							<p:outputLabel value="Quantidade de dias:" for="inputDias"/>
+							<p:inputMask mask="9?999" maxlength="3" valueChangeListener="#{reservaBean.reserva.diasReserva}" id="inputDias" 
+									immediate="true" value="#{reservaBean.reserva.diasReserva}"/>
+							<p:outputLabel value="Hóspede:" for="autoComplete" />
+							<p:autoComplete id="autoComplete" minQueryLength="3" value="#{reservaBean.autoCompleteHospede}" style="width:200px" 
+								completeMethod="#{reservaBean.listHospedeAuto}" effect="fade"  immediate="true"
+								>
+								 <p:ajax event="itemSelect" process="@this"/> 
+							</p:autoComplete>
+						</h:panelGrid>
+						<h:panelGrid columns="1">
+							<p:commandButton value="Adicionar Quarto" update=":frmQuarto" immediate="true"
+								actionListener="#{reservaBean.inicializaQuartos}" id="btnAddQuarto"
+								oncomplete="dialogQuartos.show()" icon="ui-icon-plus" />
+							<p:dataTable var="quarto" value="#{reservaBean.reserva.listQuarto}" widgetVar="quartoTable"
+				                 emptyMessage="Nenhum quarto adicionado" paginator="true"
+				                 rows="8" rowsPerPageTemplate="5,10,15"
+				                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						 		
+						 		
+						 		<p:column  headerText="Andar">
+						            <h:outputText value="#{quarto.andarQuarto}" />
+						        </p:column>
+						        
+						        <p:column headerText="Nº Quarto">
+						            <h:outputText value="#{quarto.numeroQuarto}" />
+						        </p:column>
+						        
+						        <p:column headerText="Nº Camas">
+						            <h:outputText value="#{quarto.numeroCamas}" />
+						        </p:column>
+						        
+						        <p:column headerText="Qtde. Camas">
+						            <h:outputText value="#{quarto.qtdePessoas}" />
+						        </p:column>
+						        
+						        <p:column headerText="Valor">
+						            <h:outputText value="#{quarto.valor}" converter="doubleConverter"/>
+						        </p:column>
+						        <p:column headerText="Opções">
+						           <p:commandButton value="Remover" update=":frmCadReserva" 
+						           			actionListener="#{reservaBean.removerQuarto(quarto)}"></p:commandButton>
+						        </p:column>
+						    </p:dataTable>
+						    
+					    </h:panelGrid>
+					</p:outputPanel>
+					<p:commandButton actionListener="#{reservaBean.salvarAlterar}" value="Salvar"
+						oncomplete="dialogCadReserva.hide()" update=":frmReserva" immediate="true"
+						></p:commandButton>
+					<p:commandButton value="Cancelar" onclick="dialogCadReserva.hide()" />
+				
+					
+				</h:form>
+				
+			</p:dialog>
+			
+			<p:dialog header="Selecionar Quarto"
+			 	resizable="false" modal="true" widgetVar="dialogQuartos"
+				position="center" id="mdlQuarto">
+				
+				<h:form id="frmQuarto" prependId="false">
+				    <p:dataTable var="quarto" value="#{reservaBean.listQuartosDisponiveis}" widgetVar="quartoTable" paginator="true"
+		                 emptyMessage="Nenhum quarto disponível ou cadastrado" filteredValue="#{reservaBean.listQuartosFiltro}"
+		                 selection="#{reservaBean.quartoSelect}" rows="8" rowsPerPageTemplate="6,12,16" selectionMode="single" rowKey="#{quarto.id}"
+		                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+			 		
+				 		<p:ajax global="false" event="rowSelect" update=":frmCadReserva"
+				 			listener="#{reservaBean.onRowQuartoSelect}" oncomplete="dialogQuartos.hide()"/>
+				 
+				        <f:facet name="header">
+				            <p:outputPanel>
+				                <h:outputText value="Todos os campos:" />
+				                <p:inputText id="globalFilter" onkeyup="PF('quartoTable').filter()" style="width:150px" placeholder="Insira palavra:"/>
+				            </p:outputPanel>
+				        </f:facet>
+				 		
+				 		
+				 		<p:column filterBy="#{quarto.andarQuarto}" headerText="Andar" footerText="" filterMatchMode="contains">
+				            <h:outputText value="#{quarto.andarQuarto}" />
+				        </p:column>
+				        
+				        <p:column filterBy="#{quarto.numeroQuarto}" headerText="Nº Quarto" footerText="" filterMatchMode="contains">
+				            <h:outputText value="#{quarto.numeroQuarto}" />
+				        </p:column>
+				        
+				        <p:column filterBy="#{quarto.numeroCamas}" headerText="Nº Camas" footerText="" filterMatchMode="contains">
+				            <h:outputText value="#{quarto.numeroCamas}" />
+				        </p:column>
+				        
+				        <p:column filterBy="#{quarto.qtdePessoas}" headerText="Qtde. Camas" footerText="" filterMatchMode="contains">
+				            <h:outputText value="#{quarto.qtdePessoas}" />
+				        </p:column>
+				        
+				        <p:column headerText="Valor">
+				            <h:outputText value="#{quarto.valor}" converter="doubleConverter"/>
+				        </p:column>
+				    </p:dataTable>
+					
+				</h:form>
+				
+			</p:dialog>
+
+
+		</ui:define>
+	</ui:composition>
+</html>

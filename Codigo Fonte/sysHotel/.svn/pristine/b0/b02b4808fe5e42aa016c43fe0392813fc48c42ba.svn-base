@@ -1,0 +1,47 @@
+package org.sysHotel.controller;
+
+import java.io.Serializable;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
+
+import org.primefaces.event.SelectEvent;
+import org.sysHotel.entity.CheckInCheckOut;
+import org.sysHotel.interfaces.ICrudPrimeFaces;
+
+@SessionScoped
+@ManagedBean(name="checkInCheckOutBean")
+public class CheckInCheckOutBean implements Serializable, ICrudPrimeFaces<CheckInCheckOut>{
+
+	@Override
+	public void prepararAlterarRegistro(ActionEvent actionEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void prepararNovoRegistro(ActionEvent actionEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void salvarAlterar(ActionEvent actionEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRowSelect(SelectEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(ActionEvent actionEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
