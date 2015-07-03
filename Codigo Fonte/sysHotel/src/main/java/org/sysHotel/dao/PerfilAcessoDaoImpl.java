@@ -4,9 +4,13 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.sysHotel.dao.generic.GenericHibernateDao;
 import org.sysHotel.entity.PerfilAcesso;
+import org.sysHotel.entity.Usuario;
 import org.sysHotel.enums.EnumAtivoInativo;
 import org.sysHotel.interfaces.IPerfilAcessoDao;
 
