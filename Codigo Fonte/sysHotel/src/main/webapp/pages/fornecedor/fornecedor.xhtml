@@ -16,7 +16,10 @@
 								
 					<p:commandButton value="Novo" update=":frmCadFornecedor" actionListener="#{fornecedorBean.prepararNovoRegistro}" id="btnNovo"
 						oncomplete="dialogCadFornecedor.show()" icon="ui-icon-plus" />
-							
+					
+					<p:commandButton value="Editar" update=":frmCadFornecedor" actionListener="#{fornecedorBean.prepararAlterarRegistro}" id="btnEditar"
+						oncomplete="dialogCadFornecedor.show()" icon="ui-icon-pencil"
+						disabled="#{fornecedorBean.fornecedorSelect.id==null?true:false}" />
 							
 					<p:dataTable var="fornecedor" value="#{fornecedorBean.listFornecedores}" paginator="true" rowKey="#{fornecedor.id}"
 						rows="12" rowsPerPageTemplate="6,12,16" selectionMode="single" selection="#{fornecedorBean.fornecedorSelect}"

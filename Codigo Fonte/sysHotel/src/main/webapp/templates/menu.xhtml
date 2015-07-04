@@ -47,6 +47,12 @@
 	            <p:separator/>
 	            <p:menuitem value="Receitas" url="/pages/relatorios/relatorioReceitas.xhtml" icon="ui-icon-cart" rendered="#{usuarioLogado.hasRole('RELRECEITAS')}"/>
 	        </p:submenu>
+	        
+	        <p:submenu label="Fornecedores" icon="ui-icon-folder-open">
+	            <p:menuitem value="Fornecedores" url="/pages/fornecedor/fornecedor.xhtml" 
+	            	action="#{fornecedorBean}" icon="ui-icon-home" />
+	            <p:separator />
+	        </p:submenu>
 	 		
 	 		<f:facet name="options">
 	            <p:commandButton type="submit" value="Sair" icon="ui-icon-extlink"

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
@@ -36,9 +37,16 @@ public class FornecedorBean implements Serializable, ICrudPrimeFaces<Fornecedor>
 	@Inject
 	IFornecedorDao fornecedorDao;
 	
+	@PostConstruct
+	public void init(){
+		List<Fornecedor> listFornecedor = fornecedorDao.findAllAtivos();
+		setListFornecedores(listFornecedor);
+	}
+	
+	
 	@Override
 	public void prepararAlterarRegistro(ActionEvent actionEvent) {
-		
+		setFornecedor(getFornecedorSelect());
 	}
 
 	@Override
@@ -54,7 +62,7 @@ public class FornecedorBean implements Serializable, ICrudPrimeFaces<Fornecedor>
 		}else{
 			fornecedorDao.update(getFornecedor());
 		}
-		
+		init();
 	}
 
 	@Override
