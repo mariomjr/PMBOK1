@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/template.xhtml">
+		<ui:define name="content">
+			
+			<p:dialog header="Fornecedores" visible="true"  draggable="false" resizable="false"
+						closable="false">
+				<h:form id="frmFornecedor" prependId="false">
+								
+					<p:commandButton value="Novo" update=":frmCadFornecedor" actionListener="#{fornecedorBean.prepararNovoRegistro}" id="btnNovo"
+						oncomplete="dialogCadFornecedor.show()" icon="ui-icon-plus" />
+							
+							
+					<p:dataTable var="fornecedor" value="#{fornecedorBean.listFornecedores}" paginator="true" rowKey="#{fornecedor.id}"
+						rows="12" rowsPerPageTemplate="6,12,16" selectionMode="single" selection="#{fornecedorBean.fornecedorSelect}"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				        >
+				        <p:ajax global="false" event="rowSelect" update=":frmFornecedor"/>
+					 	
+					 	<p:column headerText="Nome">
+					        <h:outputText value="#{fornecedor.nomeFornecedor}" />
+					    </p:column>
+					    <p:column headerText="CNPJ">
+					        <h:outputText value="#{fornecedor.cnpj}" />
+					    </p:column>
+					 
+					    <p:column headerText="Telefone">
+					        <h:outputText value="#{fornecedor.telefone}" />
+					    </p:column>
+					 
+					</p:dataTable>
+				</h:form>
+		    </p:dialog>
+				
+				
+
+			<p:dialog header="Cadastrar Fornecedor"
+			 	resizable="false" modal="true" widgetVar="dialogCadFornecedor"
+				position="center" id="mdlCadastroFornecedor">
+				
+				<h:form id="frmCadFornecedor" prependId="false">
+					<p:outputPanel>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Nome fornecedor :" />
+							<h:inputText value="#{fornecedorBean.fornecedor.nomeFornecedor}" />
+							<h:outputLabel value="Cnpj :" />
+							<h:inputText value="#{fornecedorBean.fornecedor.cnpj}" />
+							<h:outputLabel value="Telefone :" />
+							<h:inputText value="#{fornecedorBean.fornecedor.telefone}" />
+						</h:panelGrid>
+					</p:outputPanel>
+					<p:commandButton actionListener="#{fornecedorBean.salvarAlterar}" value="Salvar"
+						oncomplete="dialogCadFornecedor.hide()" update=":frmFornecedor"
+						></p:commandButton>
+					<p:commandButton value="Cancelar" onclick="dialogCadFornecedor.hide()" />
+				
+					
+				</h:form>
+				
+			</p:dialog>
+
+
+		</ui:define>
+	</ui:composition>
+</html>
