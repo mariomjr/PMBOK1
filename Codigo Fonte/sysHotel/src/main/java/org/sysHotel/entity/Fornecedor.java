@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.sysHotel.enums.EnumAtivoInativo;
+
 @Entity
 public class Fornecedor implements Serializable {
 
@@ -27,7 +29,8 @@ public class Fornecedor implements Serializable {
 	
 	@Column
 	private String cnpj;
-
+	
+	private EnumAtivoInativo ativoInativo;
 
 	public Long getId() {
 		return id;
@@ -61,4 +64,11 @@ public class Fornecedor implements Serializable {
 		this.cnpj = cnpj;
 	}
 
+	public EnumAtivoInativo getAtivoInativo() {
+		return ativoInativo;
+	}
+
+	public void setAtivoInativo(EnumAtivoInativo ativoInativo) {
+		this.ativoInativo = ativoInativo;
+	}
 }

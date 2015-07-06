@@ -10,6 +10,14 @@
 	<ui:composition template="/templates/template.xhtml">
 		<ui:define name="content">
 			
+			<p:confirmDialog message="Deseja realmente excluir este Fornecedor ?"
+				header="Confirmação" severity="alert"
+				widgetVar="confirmExcluir" closable="false">
+				<p:commandButton value="Sim" actionListener="#{fornecedorBean.delete}" update=":frmFornecedor" oncomplete="confirmExcluir.hide()" style="margin-left:30%"/>
+				<p:commandButton value="Não" onclick="confirmExcluir.hide();" type="button" />
+			</p:confirmDialog>	
+			
+			
 			<p:dialog header="Fornecedores" visible="true"  draggable="false" resizable="false"
 						closable="false">
 				<h:form id="frmFornecedor" prependId="false">
@@ -20,6 +28,10 @@
 					<p:commandButton value="Editar" update=":frmCadFornecedor" actionListener="#{fornecedorBean.prepararAlterarRegistro}" id="btnEditar"
 						oncomplete="dialogCadFornecedor.show()" icon="ui-icon-pencil"
 						disabled="#{fornecedorBean.fornecedorSelect.id==null?true:false}" />
+					
+					<p:commandButton value="Apagar" disabled="#{fornecedorBean.fornecedor.id==null?true:false}" 
+						id="btnApagar" onclick="confirmExcluir.show()"
+						icon="ui-icon-trash" />		
 							
 					<p:dataTable var="fornecedor" value="#{fornecedorBean.listFornecedores}" paginator="true" rowKey="#{fornecedor.id}"
 						rows="12" rowsPerPageTemplate="6,12,16" selectionMode="single" selection="#{fornecedorBean.fornecedorSelect}"

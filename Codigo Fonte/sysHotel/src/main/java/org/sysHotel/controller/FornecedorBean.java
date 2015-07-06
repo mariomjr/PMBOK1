@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import org.primefaces.event.SelectEvent;
 import org.sysHotel.entity.Fornecedor;
+import org.sysHotel.enums.EnumAtivoInativo;
 import org.sysHotel.interfaces.ICrudPrimeFaces;
 import org.sysHotel.interfaces.IFornecedorDao;
 
@@ -73,8 +74,9 @@ public class FornecedorBean implements Serializable, ICrudPrimeFaces<Fornecedor>
 
 	@Override
 	public void delete(ActionEvent actionEvent) {
-		
-		
+		getFornecedorSelect().setAtivoInativo(EnumAtivoInativo.INATIVO);
+		fornecedorDao.update(getFornecedorSelect());
+		init();
 	}
 
 	public List<Fornecedor> getListFornecedores() {
